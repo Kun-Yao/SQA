@@ -11,7 +11,7 @@ public static class carevent
         Debug.Log("1");
         GameObject newG = GameObject.Instantiate(gameObject, Position, Quaternion.Euler(0, 0, 0));
         Debug.Log("2");
-        newG.GetComponent<test>().enabled = true;
+        newG.GetComponent<carcontrol5>().enabled = true;
         newG.transform.GetChild(1).GetComponentInChildren<Camera>().enabled = true;
     }
 

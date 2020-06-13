@@ -4,21 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class test : MonoBehaviour
+public class carcontrol5 : MonoBehaviour
 {
-    GameObject dashBoard;
+    //GameObject dashBoard;
     MeshRenderer[] tires;
 
     int direction = 0;
     float maxspeed = 300;
     Vector3 checkPoint;
     float maxForce = 0;
+    private bool up = false;
+    bool down = false;
+    bool left = false;
+    bool right = false;
 
     // Start is called before the first frame update
     void Start()
     {
         tires = transform.GetChild(0).GetComponentsInChildren<MeshRenderer>();
-        dashBoard = GameObject.Find("Text");
+        //dashBoard = GameObject.Find("Text");
 
         checkPoint = transform.position;
     }
@@ -26,10 +30,10 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.GetComponent<Rigidbody>().velocity.magnitude >= 0 || transform.GetComponent<Rigidbody>().velocity.magnitude <= maxspeed)
-        {
-            dashBoard.GetComponent<Text>().text = (transform.GetComponent<Rigidbody>().velocity.magnitude).ToString("0");
-        }
+        //if (transform.GetComponent<Rigidbody>().velocity.magnitude >= 0 || transform.GetComponent<Rigidbody>().velocity.magnitude <= maxspeed)
+        //{
+        //    dashBoard.GetComponent<Text>().text = (transform.GetComponent<Rigidbody>().velocity.magnitude).ToString("0");
+        //}
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -40,13 +44,16 @@ public class test : MonoBehaviour
         
     }
 
-    private void Move()
+
+
+    public int Move(bool up, bool down, bool left, bool right)
     {
-       transform.GetComponent<Rigidbody>().AddForce(transform.forward * maxForce);
+        
         //移動
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (up)
         {
             direction = 1;
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + 1);
             if (transform.GetComponent<Rigidbody>().velocity.magnitude < maxspeed)
             {
                 maxForce = 15000;
@@ -60,9 +67,10 @@ public class test : MonoBehaviour
                 transform.GetComponent<Rigidbody>().velocity = transform.forward * direction * maxspeed;
             }
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (down)
         {
             direction = -1;
+            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
             if (transform.GetComponent<Rigidbody>().velocity.magnitude < maxspeed)
             {
                 maxForce = -15000;
@@ -82,7 +90,7 @@ public class test : MonoBehaviour
             transform.GetComponent<Rigidbody>().velocity *= 0.93f;
             maxForce = 0;
         }
-
+        transform.GetComponent<Rigidbody>().AddForce(transform.forward * maxForce);
         //轉彎
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -114,6 +122,8 @@ public class test : MonoBehaviour
                 tires[i].transform.localRotation = Quaternion.Euler(0, 0, 0);
             }
         }
+        return (int)transform.position.z;
+        
     }
 
     private void OnCollisionStay(Collision collision)
@@ -130,7 +140,7 @@ public class test : MonoBehaviour
             else
             {
                 transform.GetComponent<Rigidbody>().mass = 200;
-                Move();
+                //Move();
             }
                 
         }
@@ -147,4 +157,17 @@ public class test : MonoBehaviour
             maxForce = 0;
         }
     }
+
+    public void haha()
+    {
+        if (Input.GetKey(KeyCode.UpArrow))
+            Move(true, false, false, false);
+        else
+            Move(false, false, false, false);
+        //if (Input.GetKey(KeyCode.DownArrow))
+        //    return 2;
+        //else
+        //    return 0;
+    }
+
 }

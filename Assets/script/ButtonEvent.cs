@@ -12,8 +12,6 @@ public class ButtonEvent : MonoBehaviour
     private void Start()
     {
         carcamera = GameObject.Find("CarCamera");
-        
-        
     }
     
     public void transScene(int index)
@@ -49,7 +47,7 @@ public class ButtonEvent : MonoBehaviour
         t.transform.SetParent(car.transform);
         t.name = "third";
         car.AddComponent<Button>();
-        car.AddComponent<test>().enabled = false;
+        car.AddComponent<carcontrol5>().enabled = false;
         carevent.AddCarToArray(car);
         Debug.Log(carevent.ll[0]);
         //選好賽車再啟動所有component
